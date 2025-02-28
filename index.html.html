@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        /* Estilos globais */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        /* Cabeçalho */
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #f15a24;
+            /* Laranja */
+            color: white;
+            padding: 1rem;
+        }
+
+        header img {
+            height: 40px;
+            margin-right: 1rem;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        /* Navegação */
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #2E7D32;
+            /* Verde escuro */
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #66BB6A;
+            /* Verde claro */
+        }
+
+        nav a.active {
+            background-color: #66BB6A;
+            /* Verde claro para a seção ativa */
+        }
+
+        /* Conteúdo principal */
+        .container {
+            padding: 2rem;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #f15a24;
+            /* Laranja */
+            color: white;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+        <div id="loginSection" style="display: none;">
+            <div style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #f5f5f5;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;">
+                <div style="
+                    background-color: white;
+                    padding: 2rem;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                    width: 100%;
+                    max-width: 400px;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="
+                            display: inline-block;
+                            background-color: #F15A24;
+                            padding: 1rem;
+                            border-radius: 8px;">
+                            <img src="https://hgfpay-storage.s3.amazonaws.com/images/shares/logohgf.png" alt="HGFPAY Logo" style="max-width: 200px;">
+                        </div>
+                    </div>
+                    <form id="loginForm" onsubmit="return validateLogin(event)" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label for="username">Usuário</label>
+                            <input type="text" id="username" required style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label for="password">Senha</label>
+                            <input type="password" id="password" required style="padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                        <p id="errorMessage" style="color: red; display: none; text-align: center;">Usuário ou senha incorretos</p>
+                        <button type="submit" style="padding: 0.75rem; background-color: #F15A24; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                            Entrar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="mainContent" style="display: none;">
+            <!-- Todo o conteúdo atual do seu arquivo apresentacao.html vai aqui -->
+        </div>
+        
+        <script>
+            // Função para verificar login
+            function checkLogin() {
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+                document.getElementById('loginSection').style.display = isLoggedIn ? 'none' : 'block';
+                document.getElementById('mainContent').style.display = isLoggedIn ? 'block' : 'none';
+            }
+        
+            // Função para validar login
+            function validateLogin(event) {
+                event.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const errorMessage = document.getElementById('errorMessage');
+        
+                if (username === 'osmenotti' && password === 'sucesso123*') {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    checkLogin();
+                    errorMessage.style.display = 'none';
+                } else {
+                    errorMessage.style.display = 'block';
+                }
+        
+                return false;
+            }
+        
+            // Função para fazer logout
+            function logout() {
+                sessionStorage.removeItem('isLoggedIn');
+                checkLogin();
+            }
+        
+            // Verificar login ao carregar a página
+            checkLogin();
+        </script>
+
+    <!-- Cabeçalho -->
+    <header>
+        <img src="https://hgfpay-storage.s3.amazonaws.com/images/shares/logohgf.png" alt="Logo da Empresa">
+        <h1></h1>
+    </header>
+
+    <!-- Navegação -->
+    <nav id="navbar">
+        <a href="#home" onclick="navigate('home')">HOME</a>
+        <a href="#sobre" onclick="navigate('sobre')">PARTNERS</a>
+        <a href="#hgfpay" onclick="navigate('hgfpay')">PROJETOS</a>
+        <a href="#skycommerce" onclick="navigate('skycommerce')">SKYCOMMERCE</a>
+        <a href="#voucurtir" onclick="navigate('voucurtir')">VOUCURTIR</a>
+        <a href="#case" onclick="navigate('case')">CASE</a>
+        <a href="#hgfbar" onclick="navigate('hgfbar')">HGFBAR</a>
+        <a href="#bplan" onclick="navigate('bplan')">PLANEJAMENTO</a>
+        <a href="#parceria" onclick="navigate('parceria')">PARCERIA</a>
+        <button onclick="logout()" style="background-color: #F15A24; color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;">
+            Sair
+        </button>
+
+
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="container" id="content">
+        <!-- Conteúdo inicial será a home -->
+        <section id="home" class="card">
+            <h2>Bem-vindos à HGFPAY / 5PAY</h2>
+            <p>Temos o prazer de nos reunir com vocês e poder demonstrar um pouco de nosso trabalho nos últimos
+                anos</p>
+            <p>Nossas empresas têm visão inovadora com diversos projetos voltados ao crescimento sustentável e
+                resultados
+                sólidos</p>
+            <p>Explore todos projetos para conhecer mais sobre nossas iniciativas e simule resultados</p>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        &copy; 2025 HGFPAY. Todos os direitos reservados.
+    </footer>
+
+    <script>
+
+        const content = document.getElementById('content');
+        const navbar = document.getElementById('navbar');
+
+        function navigate(section) {
+            // Sempre rolar para o topo da página
+            document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Atualizar o conteúdo principal com base na seção
+            let htmlContent = '';
+            if (section === 'home') {
+                htmlContent = `
+                    <section id="home" class="card">
+                        <h2>Bem-vindos à HGFPAY - 5 PAY</h2>
+                        <p>Temos o prazer de nos reunir com vocês e poder demonstrar um pouco de nosso trabalho nos últimos anos</p>
+                        <p>Nossas empresas têm visão inovadora com diversos projetos voltados ao crescimento sustentável e resultados sólidos</p>
+                        <p>Explore todos os projetos para conhecer mais sobre nossas iniciativas e simule resultados</p>
+                    </section>
+                `;
+            } else if (section === 'hgfpay') {
+                htmlContent = `
+                    <section id="hgfpay" class="card">
+                        <div style="background-color: #F15A24; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                        <img src="https://hgfpay-storage.s3.amazonaws.com/images/shares/logohgf.png" alt="Logo Paroquiano" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>HGFPAY: Sistema CRM para postos de combustíveis </h2>
+                        <p>O sistema HGFPAY foi o primeiro desenvolvido pela empresa e consiste num sistema CRM (Customer Relationship Management), software este que ajuda a gerenciar relacionamento dos postos de combustíveis com os clientes.</p>
+                        <p></p>
+                        <p>Ele está integrado com grandes ERPs do mercado, como Linx, Fueltech, Autosystem, TacGas, Soutag</p>
+                        <p></p>
+                        <p>Esse software foi o ponto de partida para que a empresa firmasse parceria com as principais adquirentes do mercado, dentre elas (Cielo, Rede, GETNET, Stone, PagSeguro, MercadoPago, Safrapay).</p>
+                        <p></p>
+                        <p>Por conta dessa proximidade com as adquitrentes, a HGFPAY se tornou recentemente uma parceira distribuidora da adquirência GETNET, onde a empresa nos oferece em "profit sharing" em 25% dos resultados líquidos. Esse trabalho estamos iniciando agora, em busca de profissionais para nos representar em qualquer localidade do território nacional.</p>
+                        <div style="background-color: #0078C1; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                        <img src="https://paroquiano-bucket.s3.amazonaws.com/logos/logo-paroquiano.png" alt="Logo Paroquiano" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>Sistema para controle e recebimento de dízimo, ofertas e doações</h2>
+                        <p>Na pandemia Covid19 fomos procurados pela Mitra Diocesana de Guaxupé para desenvolver um sistema que fosse capaz de fornecer ferramentas para recebimento de ofertas, dízimos e doações, mesmo com os fiéis estando distantes da igreja. Desenvolvemos a ferramenta para recebimento através de site e QRCodes que eram divulgados nas lives de todas as paróquias da diocese.</p>
+                        <p>Este sistema é integrado com a OrgSystem que faz toda a gestão fiscal de várias empresas do terceiro setor em geral.</p>
+                        <p>Várias melhorias foram implementadas no sistema, como liberação em terminais SmartPOS homologados em todas as adquirentes, sistema de festa com emissão de fichas e venda de produtos.</p>
+                        <p>O sistema Paroquiano foi desenvolvido para a Igreja Católica e está implementado em grandes igrejas como o Santuário Nacional de Santa Rita de Cássia, mas a tecnologia pode ser replicada para igrejas de outras religiões com facilidade.</p>
+                        <div style="background-color: #FFFFFF; padding: 1.5rem; text-align: center; border-radius: 8px; border: 2px solid #005043;">
+                        <img src="https://scontent.frao1-1.fna.fbcdn.net/v/t39.30808-6/480591322_8926442920800550_8987895281861263500_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGb51S1EC3vlDPvreGCXi6LJncAUoBgcNYmdwBSgGBw1n-mJHVi5WBoWxB08H9ebrZlxdmKwvJhQ9xsJK_HABZO&_nc_ohc=hD9MySiEzDEQ7kNvgGVV5am&_nc_oc=AdhB16Zq8ciTyEWgsh25BlEq3wF8E-W5gW_i5m3EVKBKS2MCfMrFhByBiqmh75NpAAsSb239yPHt0ww5drtjFM4C&_nc_zt=23&_nc_ht=scontent.frao1-1.fna&_nc_gid=ARM9ZDtxNkeibeO_9nk0uji&oh=00_AYDDDLUqYxhvfDb3XFIMCTTQ07IVNhCMMzai1nO1yo3IZA&oe=67C605EB" 
+                        alt="Logo Omnichannel" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>OMNICHANNEL HGFPAY: Sistema de integração de lojas virtuais para SmartPOS</h2>
+                        <h3>Qual é o conceito de Omnichannel?</h3>
+                        <p>Omnichannel é uma estratégia de negócios que integra todos os canais de comunicação e vendas de uma empresa, sejam eles online ou físicos. O objetivo é proporcionar uma experiência de compra fluida e coesa ao cliente. </p>
+                        <p>O software OMNICHANNEL HGFPAY foi desenvolvido para integrar as lojas eletrônicas integradas da Irroba para os SmartPOS. Esse sistema consiste em trazer qualquer loja virtual para o mundo físico, através de um SmartPOS de qualquer adquirente</p>
+                        <p>Na prática um vendedor pode levar uma ou mais lojas virtuais por onde ele for, tendo consigo somente um SmartPOS. O cliente adquire o produto, faz o pagamento fisicamente, através de qualquer meio de pagamento e recebe o produto no conforto de sua casa, com segurança e comodidade</p>
+                        <p>Assim como em todos os outros softwares da empresa, este sistema está disponvel nas principais adquirentes do mercado, dentre elas (Cielo, Rede, GETNET, Stone, PagSeguro, MercadoPago, Safrapay).</p>
+                        <div style="background-color: #005043; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                        <img src="https://scontent.frao1-1.fna.fbcdn.net/v/t39.30808-6/480772427_8926333670811475_8059610728335060778_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeHnLjb7EIoIFeJmWJ8WmMAeXZdvAKqZgrhdl28AqpmCuEPaxWeNUvBfBecsq6DJ5_1gDI9bkA_kynUgs37XSINE&_nc_ohc=ZgrlOYnjhWIQ7kNvgEUNaBt&_nc_oc=AdhH7gf0lXqmFAtrhEcnHB2UzU9WNy-5DwWwlzuhh5V4GN_yowjht8Ry3RsxFXQ5cVWQpygQ5CmfFiasjYB9grk-&_nc_zt=23&_nc_ht=scontent.frao1-1.fna&_nc_gid=AtEiWIdegKbIi8oJmcIm17g&oh=00_AYDLf_lc-jGmGv7PD9CrtFqXyZE3dSoP9oWs5bXfOLQ6Ng&oe=67C5F6EE" alt="Logo Hgfplace" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>HGFPLACE: Projeto de Marketplace ainda não implementado </h2>
+                        <h3>Antes de falarmos sobre o projeto HFPLACE devemos entender qual é o conceito de Marketplace?</h3>
+                        <p>Marketplace é umaplataforma online que reúne produtos e serviços de vários vendedores em um único site. É como um shopping center virtual, onde os visitantes podem acessar diferentes lojas.</p>
+                        <p>É muito claro para todos o quanto que a venda pela internet (ecommerce) cresceu nos últimos anos, principalmente após a pandemia. Vimos isso de perto com o crescimento do número de clientes da Irroba e do faturamento médio de lojas, o quanto cresceu neste intervalo</p>
+                        <p>No entanto houve um outro crescimento neste mercado que somente estando de perto para perceber que foi a venda por marketplaces. O consumidor, assim como fizeram com os shoppings na venda física, tem buscado muito mais as compras através dos marketplaces, com a impressão de que assim eles tem uma segurança maior para fazer suas transações.</p>
+                        <p>O marketplace trás não somente a impressão de segurança, como também de facilidade a agilidade. Hoje sabemos que encontramos de tudo no "Mercado Livre" por exemplo, e invariavelmente fazemos nossa busca diretamente no site do marketplace, na certeza de que encontraremos os melhores negócios</p>
+                        <p>Tendo em vista a expertise da empresa em transações comerciais e meios de pagamento, acesso a milhares de sellers, além do DNA do sócio Rodrigo ser de ecommerce, desenvolvemos a ferramente de marketplace para qual buscamos parceiros interessados em explorar essa atividade</p>
+                        <p>Ele está integrado com grandes ERPs do mercado, como Linx, Fueltech, Autosystem, TacGas, Soutag</p>
+                        <p>Os principais marketplaces em operação no país são extrangeiros e cobram de 18 a 25% de comissionamento dos vendedores</p>
+                        <p>Nossa ferramenta tem integração com todos meios de pagamento e de transportes do país</p>
+
+                    </section>
+                `;
+
+            } else if (section === 'sobre') {
+                htmlContent = `
+                    <section id="sobre" class="card">
+                        <h2>Quem Somos</h2>
+                        <div style="display: flex; margin-bottom: 2rem; align-items: center;">
+                            <div style="flex-shrink: 0; margin-right: 1.5rem;">
+                                <img src="data:image/jpeg;base64,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" alt="Foto do Sócio 1" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h3>Luciano Costa Ferreira</h3>
+                                <p><strong>Idade:</strong> 48 anos</p>
+                                <p><strong>Formação:</strong> Ciências Contábeis / Administração de Empresas / Análise e Desenvolvimento de Sistemas (Graduando 06/2025)</p>
+                                <p><strong>Especialização:</strong> MBA Gestão Estratégica / POS Gestão Empresarial</p>
+                                <p><strong>Currículo Profissional:</strong> Camino Calçados - Prefeitura Municipal de Franca - Petrobras Distribuidora S.A - HGFPAY - 5PAY - VOUCURTIR</p>
+                                <p><strong>Histórico Profissional:</strong> Iniciou sua carreira como almoxarife em fábrica de calçados, Trabalho como Servidor Público Municipal por 3 anos até ingressar na estatal Petrobras Distribuidora, onde ficou por 17 anos. Na estatal entrou como assessor Comercial, passou por analista de negócios e chegou a Gerente Regional Comercial, atuando como Gerente regional nos estados da Paraíba, Pernambuco e por último em Minas Gerais, quando saiu da empresa para empreender no ramo da tecnologia, fundando a HGFPAY, 5PAY e VOUCURTIR.</p>
+                            </div>
+                        </div>
+            
+                        <div style="display: flex; margin-bottom: 2rem; align-items: center;">
+                            <div style="flex-shrink: 0; margin-right: 1.5rem;">
+                                <img src="data:image/jpeg;base64,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" alt="Foto do Sócio 2" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h3>Rodrigo Carvalho dos Santos</h3>
+                                <p><strong>Idade:</strong> 49 anos</p>
+                                <p><strong>Formação:</strong> Processamento de Dados, Administração de empresas, Marketing e Publicidade</p>
+                                <p><strong>Formação:</strong> Especialização em Medical Software pela Universidade de Yale (EUA) </p>                                
+                                <p><strong>Curriculo Profissional:</strong> Mais de 30 anos de experiência em tecnologia e desenvolvimento de produtos e serviços - Habilidades em liderança, gestão de projetos e desenvolvimento de soluções inovadoras</p>
+                                <p><strong>Histórico Profissional:</strong> Empreendedor nato, fundou há 27 anos a Irroba ecommerce, uma das plataformas de comércio eletrônico mais antigas do planeta.</p>
+                            </div>
+                        </div>
+            
+                        <div style="display: flex; margin-bottom: 2rem; align-items: center;">
+                            <div style="flex-shrink: 0; margin-right: 1.5rem;">
+                                <img src="https://media.licdn.com/dms/image/v2/C4E03AQH1aqlew11K4w/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1657827439144?e=2147483647&v=beta&t=R63bUa3oYYJ-GbPkomse-u4blN5NGXMBTqHnTiJiah0" alt="Foto do Sócio 3" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h3>Cláudio Messias Ferro</h3>
+                                <p><strong>Idade:</strong> 69 anos</p>
+                                <p><strong>Formação:</strong> Administração de Empresas e Economia pela PUC</p>
+                                <p><strong>Especialização:</strong> MBA Executivo pela Wharton School, escola de negócios da Pensilvania University, Philadelphia, USA</p>
+                                <p><strong>Currículo Profissional:</strong> Conselheiro da CNF (Confederação Nacional das Instituições Financeiras / Diretor e Conselheiro da ABBC – Associação Brasileira de Bancos / Diretor e Conselheiro da ABBC – Associação Brasileira de Bancos</p>
+                                <p><strong>Histórico Profissional:</strong> Com experiência em mais de 30 anos no mercado financeiro, em cargos de direção executiva, como no Banco Safra, por exemplo, coordenou negócios com mais de 200 órgãos públicos e iImplantou estruturas de varejo em todo território nacional para empréstimo pessoal, consignado e financiamento de veículos. </p>
+                            </div>
+                        </div>
+
+                                 <div style="display: flex; margin-bottom: 2rem; align-items: center;">
+                            <div style="flex-shrink: 0; margin-right: 1.5rem;">
+                                <img src="data:image/jpeg;base64,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" alt="Foto do Sócio 3" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h3>Ricardo Fernandes Nogueira</h3>
+                                <p><strong>Idade:</strong> 63 anos</p>
+                                <p><strong>Formação:</strong> Direito OAB/SP sob o nº 96.574</p>
+                                <p><strong>Especialização:</strong> Direito empresarial pela Universidade Presbiteriana Mackenzie</p>
+                                <p><strong>Currículo Profissional:</strong> Sócio Proprietário há 34 anos do escritório Fernandez e Fiuza Sociedade de Advogados, localizado no centro da Capital Paulista, atende clientes de vários segmentos empresarial e financeiro.</p>
+                                <p><strong>Histórico Profissional:</strong> Advogado especializado para atuação nas áreas do Direito Civil, Comercial, Consumidor, Societário, Bancário Imobiliário e Trabalhista.</p>
+                            </div>
+                        </div>
+
+                                 <div style="display: flex; margin-bottom: 2rem; align-items: center;">
+                            <div style="flex-shrink: 0; margin-right: 1.5rem;">
+                                <img src="data:image/jpeg;base64,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" alt="Foto do Sócio 3" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div>
+                                <h3>Guilherme Machado Lemos</h3>
+                                <p><strong>Idade:</strong> 43 anos</p>
+                                <p><strong>Formação:</strong> Administração de Empresas - CRECI/DF</p>
+                                <p><strong>Currículo Profissional:</strong> Açougue Delfinópolis, Cortume Toinzinho, Sucolândia, Home Inteligência de Negócios</p>
+                                <p><strong>Histórico Profissional:</strong> Começou a trabalhar muito novo, sempre atuando no comércio, fez Administração de empresas e abriu vários negócios de sucesso, como restaurante e a Sucolândia que tocou por quase duas décadas. Atualmente está a frente da Home Inteligência em Negócios, cuja expertise deste profissional está aí, que consiste em descobrir e lapidar bons negócios./p>
+                            </div>
+                        </div>
+
+
+                    </section>
+                `;
+            } else if (section === 'voucurtir') {
+                htmlContent = `
+                    <section id="voucurtir" class="card">
+                        <div style="background-color: #092136; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                            <img src="https://voucurtir-bucket.s3.amazonaws.com/logo.png" alt="Logo Voucurtir" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>Sistema para venda de ingressos e controle de acesso a eventos</h2>
+                        <p>O sistema Voucurtir é uma plataforma completa para venda de ingressos e controle de acesso a eventos. Ele permite a emissão de ingressos com QR Codes, dispositivos NFC/RFID e até validação por biometria facial.</p>
+                        <p>A plataforma está 100% validada e pode iniciar a operação imediatamente</p>
+                        <p>Este software está preparado para distribuição em White Label, ou seja, podemos criar uma plataforma com marca própria para qualquer parceiro, produtor ou artista</p>
+
+                        <div class="simulator" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                            <div class="inputs" style="flex: 1; min-width: 300px;">
+                                <h3>Simule os Resultados</h3>
+                                <form id="calculator-form">
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Quantidade de Eventos Mensais</label>
+                                        <input type="number" id="events" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Público Médio por Evento</label>
+                                        <input type="number" id="audience" placeholder="Ex.: 200" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Preço Médio do Ingresso</label>
+                                        <input type="number" id="ticketPrice" placeholder="Ex.: 50" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Percentual de Venda Online (%)</label>
+                                        <input type="number" id="onlineRate" placeholder="Ex.: 70" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Percentual de Venda Física (%)</label>
+                                        <input type="number" id="physicalRate" placeholder="Ex.: 20" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Percentual de Venda Direta ou Cortesia (%)</label>
+                                        <input type="number" id="directRate" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Percentual de Venda Parcelada até 3 vezes (%)</label>
+                                        <input type="number" id="threeInstallments" placeholder="Ex.: 50" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Percentual de Venda Parcelada até 6 vezes (%)</label>
+                                        <input type="number" id="sixInstallments" placeholder="Ex.: 30" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Percentual de Venda Parcelada até 12 vezes (%)</label>
+                                        <input type="number" id="twelveInstallments" placeholder="Ex.: 20" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Taxa de Conveniência Cobrada (%)</label>
+                                        <input type="number" id="convenienceFee" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Rebate para Artista/Produtor (%)</label>
+                                        <input type="number" id="producerRebate" placeholder="Ex.: 5" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Tech Lead</label>
+                                        <input type="number" id="cto" placeholder="Ex.: 32000" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Desenvolvedores Fullstack</label>
+                                        <input type="number" id="fullstackDevs" placeholder="Ex.: 2" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Desenvolvedor Backend</label>
+                                        <input type="number" id="backendDev" placeholder="Ex.: 1" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Desenvolvedor Frontend</label>
+                                        <input type="number" id="frontendDev" placeholder="Ex.: 1" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Atendentes de Suporte</label>
+                                        <input type="number" id="supportStaff" placeholder="Ex.: 2" required />
+                                    </div>
+                                    <button type="button" onclick="calculateResults()">Calcular Resultados</button>
+                                    <button type="button" onclick="clearFields()">Limpar Dados</button>
+                                    <button type="button" onclick="exportToPDF()">Exportar Resultado em PDF</button>
+                                </form>
+                            </div>
+                            <div class="results" style="flex: 1; min-width: 300px;">
+                                <h3>Resultados Mensais</h3>
+                                <p>Faturamento Total Bruto: <span id="grossRevenue">R$ 0,00</span></p>
+                                <p>Custo Operacional Bruto: <span id="operationalCost">R$ 0,00</span></p>
+                                <p>Resultado Operacional: <span id="operationalResult">R$ 0,00</span></p>
+                                <p>Impostos: <span id="taxes">R$ 0,00</span></p>
+                                <p>Resultado Líquido Final: <span id="netResult">R$ 0,00</span></p>
+                                <h3>Resultados por Evento</h3>
+                                <p>Faturamento Total Bruto: <span id="eventGrossRevenue">R$ 0,00</span></p>
+                                <p>Custo Operacional Bruto: <span id="eventOperationalCost">R$ 0,00</span></p>
+                                <p>Resultado Operacional: <span id="eventOperationalResult">R$ 0,00</span></p>
+                                <p>Impostos: <span id="eventTaxes">R$ 0,00</span></p>
+                                <p>Resultado Líquido Final: <span id="eventNetResult">R$ 0,00</span></p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            } else if (section === 'hgfbar') {
+                htmlContent = `
+                    <section id="hgfbar" class="card">
+                        <div style="background-color: #024C43; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                            <img src="https://voucurtir-bucket.s3.amazonaws.com/bar/geral/logo-hgf.svg" alt="Logo HGFBar" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>Sistema para controle de bares e eventos</h2>
+                        <p>O sistema HGFBAR é uma solução avançada que permite controle de estoque, emissão de fichas ou uso de tecnologia cashless em eventos. Ele oferece funcionalidades completas para atender às necessidades do organizador.</p>
+                        <div class="simulator" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                            <div class="inputs" style="flex: 1; min-width: 300px;">
+                                <h3>Simule os Resultados</h3>
+                                <form id="hgfbar-form">
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Quantidade de Eventos Mensais</label>
+                                        <input type="number" id="events" placeholder="Ex.: 5" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Público Médio por Evento</label>
+                                        <input type="number" id="audience" placeholder="Ex.: 100" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Consumo Médio por Pessoa (R$)</label>
+                                        <input type="number" id="averageConsumption" placeholder="Ex.: 50" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Quantidade de SmartPOS por Evento</label>
+                                        <input type="number" id="smartPOS" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Faturamento Crédito (%)</label>
+                                        <input type="number" id="creditRate" placeholder="Ex.: 60" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Faturamento Débito (%)</label>
+                                        <input type="number" id="debitRate" placeholder="Ex.: 25" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Faturamento PIX (%)</label>
+                                        <input type="number" id="pixRate" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Faturamento Dinheiro (%)</label>
+                                        <input type="number" id="cashRate" placeholder="Ex.: 5" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Desenvolvedores Fullstack</label>
+                                        <input type="number" id="fullstackDevs" placeholder="Ex.: 2" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Atendentes de Suporte</label>
+                                        <input type="number" id="supportStaff" placeholder="Ex.: 3" required />
+                                    </div>
+                                    <button type="button" onclick="calculateHgfBar()">Calcular Resultados</button>
+                                    <button type="button" onclick="clearFieldsHgfBar()">Limpar Dados</button>
+                                    <button type="button" onclick="exportToPDFHgfBar()">Exportar Resultado em PDF</button>
+                                </form>
+                            </div>
+                            <div class="results" style="flex: 1; min-width: 300px;">
+                                <h3>Resultados Mensais</h3>
+                                <p>Faturamento Total Bruto: <span id="grossRevenue">R$ 0,00</span></p>
+                                <p>Custo Operacional Bruto: <span id="operationalCost">R$ 0,00</span></p>
+                                <p>Resultado Operacional: <span id="operationalResult">R$ 0,00</span></p>
+                                <p>Impostos: <span id="taxes">R$ 0,00</span></p>
+                                <p>Resultado Líquido Final: <span id="netResult">R$ 0,00</span></p>
+                                <h3>Resultados por Evento</h3>
+                                <p>Faturamento Total Bruto: <span id="eventGrossRevenue">R$ 0,00</span></p>
+                                <p>Custo Operacional Bruto: <span id="eventOperationalCost">R$ 0,00</span></p>
+                                <p>Resultado Operacional: <span id="eventOperationalResult">R$ 0,00</span></p>
+                                <p>Impostos: <span id="eventTaxes">R$ 0,00</span></p>
+                                <p>Resultado Líquido Final: <span id="eventNetResult">R$ 0,00</span></p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            } else if (section === 'case') {
+                htmlContent = `
+                    <section id="case" class="card">
+                        <div style="background-color: #024C43; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                            <img src="https://images.ticket360.com.br/images.ticket360/eventos/interna/30474-20250206173926.jpg" alt="Logo HGFBar" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>Estudo de caso - Lançamento DVD Intensidade Tour - Cesar Menotti e Fabiano - Ticket360</h2>
+                        <p>Segue análise do caso concreto, de show da Dupla Cesar Menotti e Fabiano que está a venda neste momento na plataforma Ticket360</p>
+                        <p>Está sendo considerado dados reais de valor de ingresso, taxas de conveniência, transação e juros praticadas pela tiqueteira que está comercializando os ingressos</p>
+                        <div class="simulator" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                            <div class="inputs" style="flex: 1; min-width: 300px;">
+                                <h3>Simule os Resultados</h3>
+                                <form id="hgfbar-form">
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Ingresso Total a Venda = 3400 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Ingresso Total Vendido = 2065 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda online (%)</label>
+                                        <input type="number" id="vendaOn" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda PDV (%)</label>
+                                        <input type="number" id="vendaFisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Direta/Cortesia (%)</label>
+                                        <input type="number" id="vendaDireta" placeholder="Ex.: 10" required />
+                                    </div>
+
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda meia entrada / idoso (%)</label>
+                                        <input type="number" id="meiaEntrada" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <h3>Meios de Pagamento online</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda PIX online (%)</label>
+                                        <input type="number" id="pixOn" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Crédito a Vista online(%)</label>
+                                        <input type="number" id="creditoOn" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Parcelado 3x online (%)</label>
+                                        <input type="number" id="credito3On" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Parcelado 6x online (%)</label>
+                                        <input type="number" id="credito6On" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Parcelado 12x online (%)</label>
+                                        <input type="number" id="credito12On" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <h3>Meios de Pagamento PDV</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Dinheiro PDV (%)</label>
+                                        <input type="number" id="dinheiroFisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda PIX PDV (%)</label>
+                                        <input type="number" id="pixFisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Débito PDV(%)</label>
+                                        <input type="number" id="debitoFisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Crédito a Vista PDV(%)</label>
+                                        <input type="number" id="creditoFisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Parcelado 3x PDV (%)</label>
+                                        <input type="number" id="credito3Fisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Parcelado 6x PDV (%)</label>
+                                        <input type="number" id="credito6Fisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Venda Parcelado 12x PDV (%)</label>
+                                        <input type="number" id="credito12Fisico" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <h3>Regras de negócio</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Taxa de Conveniência (%)</label>
+                                        <input type="number" id="taxaConv" placeholder="Ex.: 25" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% Rebate produtor/artista (%)</label>
+                                        <input type="number" id="rebate" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <button type="button" onclick="calculateCase()">Calcular Resultados</button>
+                                    <button type="button" onclick="clearFieldsCase()">Limpar Dados</button>
+                                    <button type="button" onclick="exportToPDFCase()">Exportar Resultado em PDF</button>
+                                </form>
+                            </div>
+                            <div class="results" style="flex: 1; min-width: 300px;">
+                                <h3>Resultado vendas parciais - até 25/02</h3>
+                                <p>Faturamento Total Bruto: <span id="partialRevenue">R$ 0,00</span></p>
+                                <p>Valor dos Ingressos: <span id="partialTickets">R$ 0,00</span></p>
+                                <p>Receita Bruta Tiqueteira: <span id="partialGrossRevenue">R$ 0,00</span></p>
+                                <p>Despesa Bruta Tiqueteira: <span id="partialCost">R$ 0,00</span></p>
+                                <p>Resultado Operacional: <span id="partialNetIncome">R$ 0,00</span></p>
+                                <p>Impostos: <span id="partialTaxes">R$ 0,00</span></p>
+                                <p>Resultado Líquido Final: <span id="partialProfit">R$ 0,00</span></p>
+                                
+                                <h3>Resultado esperado no final do evento - Venda Total</h3>
+                                <p>Faturamento Total Bruto: <span id="totalRevenue">R$ 0,00</span></p>
+                                <p>Valor dos Ingressos: <span id="totalTickets">R$ 0,00</span></p>
+                                <p>Receita Bruta Tiqueteira: <span id="totalGrossRevenue">R$ 0,00</span></p>                               
+                                <p>Despesa Bruta Tiqueteira: <span id="totalCost">R$ 0,00</span></p>
+                                <p>Resultado Operacional: <span id="totalNetIncome">R$ 0,00</span></p>
+                                <p>Impostos: <span id="totalTaxes">R$ 0,00</span></p>
+                                <p>Resultado Líquido Final: <span id="totalProfit">R$ 0,00</span></p>
+                            </div>
+                        </div>
+                    </section>
+                `;
+            } else if (section === 'bplan') {
+                htmlContent = `
+                    <section id="case" class="card">
+                        
+                        <h2>Business Plan - Tiqueteira - Sistema Bar - Skycommerce</h2>
+                        <p>Vamos fazer um planejamento detalhado dos projetos voucurtir, hgfbar e skycommerce para analisar a viabilidadde do negócio</p>
+                        <div class="simulator" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                            <div class="inputs" style="flex: 1; min-width: 300px;">
+                                <h3>Execução do Planejamento</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Data do Planejamento (data atual)</label>
+                                        <input type="date" id="dataBP" placeholder="Ex.: 10/04/2025" required />
+                                    </div>
+                                <h3>Investimentos já realizados - R$ 1.278.640,00</h3>
+                                <form id="bplan-form">
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial móveis e equipamentos = R$ 34.500,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial SmartPOS = R$ 31.840,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial Adesivos NFC = R$ 104.300,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial Bobinas Marca d'água = R$ 8.000,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Ativo plataforma voucurtir) = R$ 750.000,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Ativo plataforma HGFBAR) = R$ 300.000,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Códigos para plataforma skycommerce) = R$ 50.000,00 </label>
+                                    </div>
+                                    <h3>Formação de Equipe</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Tech Lead</label>
+                                        <input type="number" id="techLead" placeholder="Ex.: 1" required />
+                                        <label>Salário</label>
+                                        <input type="number" id="salarioTL" placeholder="Ex.: 30.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Desenvolvedores</label>
+                                        <input type="number" id="devs" placeholder="Ex.: 10" required />
+                                        <label>Salário</label>
+                                        <input type="number" id="salarioDev" placeholder="Ex.: 7.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Atendimento ao Cliente</label>
+                                        <input type="number" id="sac" placeholder="Ex.: 2" required />
+                                        <label>Salário</label>
+                                        <input type="number" id="salarioSac" placeholder="Ex.: 3.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Serviços Gerais</label>
+                                        <input type="number" id="servGerais" placeholder="Ex.: 1" required />
+                                        <label>Salário</label>
+                                        <input type="number" id="salarioSG" placeholder="Ex.: 2.000,00" required />
+                                    </div>
+                                    <h3>Investimentos adicionais em equipamentos</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Computadores</label>
+                                        <input type="number" id="computador" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Celulares</label>
+                                        <input type="number" id="celular" placeholder="Ex.: 3" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Tablets</label>
+                                        <input type="number" id="tablet" placeholder="Ex.: 1" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>SmartPos</label>
+                                        <input type="number" id="smartPos" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <h3>Calculos financeiros</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Receita Mensal auferida com Tiqueteira</label>
+                                        <input type="number" id="receitaTiqueteira" placeholder="Ex.: 100.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Receita Mensal auferida com HGFBAR</label>
+                                        <input type="number" id="receitaHgfbar" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Receita Mensal auferida com skycommerce</label>
+                                        <input type="number" id="receitaSky" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Início das operações</label>
+                                        <input type="date" id="inicioOperacao" placeholder="Ex.: 10/04/2025" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Taxa de Crescimento mensal (%)</label>
+                                        <input type="number" id="taxaCrescimento" placeholder="Ex.: 2" required />
+                                    </div>
+
+                                    <h3>Custos Fixos</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Servidor</label>
+                                        <input type="number" id="servidor" placeholder="Ex.: 10.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Aluguel</label>
+                                        <input type="number" id="aluguel" placeholder="Ex.: 5.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Água e Energia</label>
+                                        <input type="number" id="aguaEnergia" placeholder="Ex.: 1.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Telefonia e Internet</label>
+                                        <input type="number" id="telefonia" placeholder="Ex.: 1.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Material de Suprimento Básico</label>
+                                        <input type="number" id="suprimento" placeholder="Ex.: 1.000,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Contabilidade</label>
+                                        <input type="number" id="contabilidade" placeholder="Ex.: 2.000,00" required />
+                                    </div>
+                                    <h3>Remuneração Capital Esperada (%)</h3>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>% tma Taxa Média de Atratividade (%)</label>
+                                        <input type="number" id="tma" placeholder="Ex.: 10" required />
+                                    </div>
+                                    <button type="button" onclick="calculateBplan()">Calcular Resultados</button>
+                                    <button type="button" onclick="clearFieldsBplan()">Limpar Dados</button>
+                                    <button type="button" onclick="exportToPDFBplan()">Exportar Resultado em PDF</button>
+                                </form>
+                            </div>
+                            <div class="results" style="flex: 1; min-width: 300px;">
+                                <h3>Avaliação do Negócio</h3>
+                                <h3>Investimento Inicial</h3>
+                                <p>Investimento Inicial Realizado: <span id="investimentMade">R$ 0,00</span></p>
+                                <p>Investimento Inicial Necessário: <span id="investimentRequired">R$ 0,00</span></p>
+                                <p>Investimento Inicial Capital de Giro: <span id="workingCapital">R$ 0,00</span></p>
+                                <p>Investimento Inicial Total: <span id="totalInvestiment">R$ 0,00</span></p>
+
+                                <h3>Resultado Financeiro</h3>
+                                <p>Lucro Bruto Médio Mensal próximos 5 anos: <span id="grossProfit">R$ 0,00</span></p>
+                                <p>Custo Fixo Mensal: <span id="custoFixo">R$ 0,00</span></p>
+                                <p>Payback: <span id="payback">meses</span></p>
+                                <p>Ponto de Equilíbrio: <span id="breakevenPoint">meses</span></p>
+                                <p>TIR (%) Taxa Interna de Retorno: <span id="tir">R$ 0,00</span></p>
+                                <p>Valor Presente Líquido: <span id="vpl">R$ 0,00</span></p>                                
+                                <p>Valuation do projeto: <span id="valuation">R$ 0,00</span></p>                                
+                                <p>Lucro Líquido Total a valor presente: <span id="lucroPresente">R$ 0,00</span></p>                                
+                            </div>
+                        </div>
+                    </section>
+                `;
+
+            } else if (section === 'parceria') {
+                htmlContent = `
+                    <section id="parceria" class="card">
+                        
+                        <h2>Proposta viável de parceria - HGFPAY / OSMENOTTI</h2>
+                        <p>Conforme discutido em reunião anterior, vimos a oportunidade da parceria entre Os Menotti e HGFPAY</p>
+                        <p>A aliança entre o network de ambas as partes com a capacidade tecnológica da HGFPAY certamente é uma receita de sucesso</p>
+                        <p>Nessa página registraremos a necessidade de investimentos e definiremos as responsabilidades e participação de cada uma das empresas</p>
+                        <p>Caso acordado pelas partes, será gerado o relatório que assinado será encaminhado para formalização contratual</p>
+
+                        <div class="simulator" style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                            <div class="inputs" style="flex: 1; min-width: 300px;">
+                            <div style="background-color: #F15A24; padding: 5.2rem; text-align: center; border-radius: 8px;">
+                            <img src="https://hgfpay-storage.s3.amazonaws.com/images/shares/logohgf.png" alt="Logo Paroquiano" style="max-width: 300px; height: auto;">
+                        </div>
+
+                                <h3>INVESTIMENTO INICIAL</h3>
+                                <form id="bplan-form">
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial móveis e equipamentos = R$ 34.500,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial SmartPOS = R$ 31.840,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial Adesivos NFC = R$ 104.300,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial Bobinas Marca d'água = R$ 8.000,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Capital de Giro = R$ 0,00 </label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Ativo plataforma voucurtir) = R$ 750.000,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Ativo plataforma HGFBAR) = R$ 300.000,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Códigos para plataforma skycommerce) = R$ 50.000,00 </label>
+                                    </div>
+                                    <h3>Investimento total</h3>
+                                    <p>Investimento total HGFPAY: <span id="investimentoHgfpay">R$ 0,00</span></p>
+                                    <p>Percentual investimento HGFPAY: <span id="percentualHgfpay">0%</span></p>
+
+                                    <h2>PARTICIPAÇÃO PERCENTUAL NO PROJETO</h2>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>A Participação percentual da HGFPAY no projeto será de:</label>
+                                        <input type="number" id="participacaoHgfpay" placeholder="Ex.: 50%" required />
+                                    </div>
+
+                                    <button type="button" onclick="calculateParceria()">Calcular Resultados</button>
+                                    <button type="button" onclick="clearFieldsParceria()">Limpar Dados</button>
+                                    <button type="button" onclick="exportToPDFParceria()">Exportar Resultado em PDF</button>
+                                </form>
+                            </div>
+                            <div class="results" style="flex: 1; min-width: 300px;">
+                            <div style="background-color: #2c0f06; padding: 0.0rem; text-align: center; border-radius: 8px;">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjxGTJ7AhdJkMkSNEDZ80-lN4iwWx9T9T1lQ&s" alt="Imagem Osmenotti" style="max-width: 300px; height: auto;">
+                            </div>
+
+                                <h3>INVESTIMENTO INICIAL</h3>
+                                <form id="bplan-form">
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial móveis e equipamentos (Imediato)</label>
+                                        <input type="number" id="moveisMenotti" placeholder="Ex.: R$ 1,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial SmartPOS (Imediato)</label>
+                                        <input type="number" id="smartPosMenotti" placeholder="Ex.: R$ 1,00" required />
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial Adesivos NFC = R$ 0,00</label>
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial Bobinas Marca d'água (30 dias)</label>
+                                        <input type="number" id="bobinasMenotti" placeholder="Ex.: R$ 1,00" required />
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Capital de Giro (6 parcelas)</label>
+                                        <input type="number" id="capitalGiroMenotti" placeholder="Ex.: R$ 1,00" required />
+                                    </div>                                    
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Ativo plataforma voucurtir) = R$ 0,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Ativo plataforma HGFBAR) = R$ 0,00 </label>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>Investimento Inicial (Códigos para plataforma skycommerce) = R$ 0,00 </label>
+                                    </div>
+                                    <h3>Investimento total</h3>
+                                    <p>Investimento total Os Menottis: <span id="investimentoMenotti">R$ 0,00</span></p>
+                                    <p>Percentual investimento Os Menottis: <span id="percentualMenotti">0%</span></p>
+                                    <h2>PARTICIPAÇÃO PERCENTUAL NO PROJETO</h2>
+                                    <div style="margin-bottom: 1rem;">
+                                        <label>A Participação percentual dos Menottis no projeto será de:</label>
+                                        <input type="number" id="participacaoMenotti" placeholder="Ex.: 50%" required />
+                                    </div>
+
+                            </div>
+                        </div>
+                    </section>
+                `;
+
+            } else if (section === 'skycommerce') {
+                htmlContent = `
+                    <section id="skycommerce" class="card">
+                        <div style="background-color: #1D3559; padding: 1.5rem; text-align: center; border-radius: 8px;">
+                            <img src="https://skycommerce.com.br/images/logo/logo.png" alt="Logo Paroquiano" style="max-width: 300px; height: auto;">
+                        </div>
+                        <h2>Sistema pensado exclusivamente para atender uma demanda apresentada pelos Menotti em reunião prévia</h2>
+                        <p>Apesar de não termos ainda a plataforma desenvolvida, trata-se de um projeto de expertise da HGFPAY por se tratar de marketplace e comércio eletrônico</p>
+                        <p>Começamos a estudar o mercado e iniciamos um esboço do que teremos que desenvolver, o que nos dá uma ideia de quanto tampo e qual valor devemos dispôr para colocar o projeto de pé.</p>
+                        <p>Formando uma equipe exclusiva para o projeto, com um Tech Lead e três desenvolvedores, em no máximo 150 dias teremos o projeto concluído, no entanto em 60 dias já conseguimos divulgar e negociar aeronaves.</p>
+                        <p>Importante salientar que, para o sucesso da plataforma, necessariamente precisamos de suporte específico da área, com profissional da aviação, para nos ajudar a construir a plataforma de acordo com requisitos próprios do negócio.</p>
+                        <p>Nós não fizemos um simulador para esse projeto por falta de conhecimento aprofundado do mercado, no entanto vimos que empresas como compreasaalta.com.br tem umsite para comercialização de aeronaves e cobra 5% de comissionamento em cada unidade vendida</p>
+                    </section>
+                `;
+            }
+
+            // Atualizar o conteúdo da página
+            content.innerHTML = htmlContent;
+
+            // Atualizar a barra de navegação para destacar a seção ativa
+            const links = navbar.querySelectorAll('a');
+            links.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(section)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        content.innerHTML = htmlContent;
+
+        const links = navbar.querySelectorAll('a');
+        links.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').includes(section)) {
+                link.classList.add('active');
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        function calculateParceria() {
+            try {
+                // Valor fixo do investimento HGFPAY
+                const investimentoHgfpay = 1278640;
+
+                // Obter valores dos investimentos Menotti
+                const moveisMenotti = Number(document.getElementById('moveisMenotti').value) || 0;
+                const smartPosMenotti = Number(document.getElementById('smartPosMenotti').value) || 0;
+                const bobinasMenotti = Number(document.getElementById('bobinasMenotti').value) || 0;
+                const capitalGiroMenotti = Number(document.getElementById('capitalGiroMenotti').value) || 0;
+
+                // Calcular investimento total Menotti
+                const investimentoMenotti = moveisMenotti + smartPosMenotti + bobinasMenotti + capitalGiroMenotti;
+
+                // Calcular investimento total do projeto
+                const investimentoTotal = investimentoHgfpay + investimentoMenotti;
+
+                // Calcular percentuais de investimento
+                const percentualHgfpay = (investimentoHgfpay / investimentoTotal) * 100;
+                const percentualMenotti = (investimentoMenotti / investimentoTotal) * 100;
+
+                // Função para formatação de valores monetários
+                const formatCurrency = (value) => {
+                    return value.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+                };
+
+                // Função para formatação de percentuais
+                const formatPercentage = (value) => {
+                    return value.toFixed(2) + '%';
+                };
+
+                // Atualizar valores na interface
+                document.getElementById('investimentoHgfpay').textContent = formatCurrency(investimentoHgfpay);
+                document.getElementById('percentualHgfpay').textContent = formatPercentage(percentualHgfpay);
+                document.getElementById('investimentoMenotti').textContent = formatCurrency(investimentoMenotti);
+                document.getElementById('percentualMenotti').textContent = formatPercentage(percentualMenotti);
+
+            } catch (error) {
+                console.error('Erro no cálculo:', error);
+                alert('Ocorrer um erro ao realizar os cálculos. Verifique os dados inseridos.');
+            }
+        }
+
+        function clearFieldsParceria() {
+            try {
+                // Limpar campos de input dos Menotti
+                document.getElementById('moveisMenotti').value = '';
+                document.getElementById('smartPosMenotti').value = '';
+                document.getElementById('bobinasMenotti').value = '';
+                document.getElementById('capitalGiroMenotti').value = '';
+        
+                // Limpar campos de participação
+                document.getElementById('participacaoHgfpay').value = '';
+                document.getElementById('participacaoMenotti').value = '';
+        
+                // Limpar resultados HGFPAY
+                document.getElementById('investimentoHgfpay').textContent = 'R$ 0,00';
+                document.getElementById('percentualHgfpay').textContent = '0%';
+        
+                // Limpar resultados Menotti
+                document.getElementById('investimentoMenotti').textContent = 'R$ 0,00';
+                document.getElementById('percentualMenotti').textContent = '0%';
+        
+            } catch (error) {
+                console.error('Erro ao limpar campos:', error);
+                alert('Ocorreu um erro ao limpar os campos. Por favor, tente novamente.');
+            }
+        }
+
+        async function exportToPDFParceria() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Configuração do cabeçalho
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text("PROPOSTA DE PARCERIA HGFPAY - OS MENOTTI", 105, 15, { align: "center" });
+
+                // Data do relatório
+                const dataAtual = new Date().toLocaleDateString('pt-BR');
+                doc.setFontSize(10);
+                doc.text(`Data do relatório: ${dataAtual}`, 10, 25);
+
+                // Dados HGFPAY
+                const dadosHgfpay = [
+                    ["Móveis e equipamentos", "R$ 34.500,00"],
+                    ["SmartPOS", "R$ 31.840,00"],
+                    ["Adesivos NFC", "R$ 104.300,00"],
+                    ["Bobinas Marca d'água", "R$ 8.000,00"],
+                    ["Capital de Giro", "R$ 0,00"],
+                    ["Plataforma VouCurtir", "R$ 750.000,00"],
+                    ["Plataforma HGFBar", "R$ 300.000,00"],
+                    ["Plataforma Skycommerce", "R$ 50.000,00"],
+                    ["Total Investimento", document.getElementById('investimentoHgfpay').textContent],
+                    ["Percentual do Investimento", document.getElementById('percentualHgfpay').textContent],
+                    ["Participação Acordada", document.getElementById('participacaoHgfpay').value + '%']
+                ];
+
+                // Dados Menotti
+                const dadosMenotti = [
+                    ["Móveis e equipamentos", document.getElementById('moveisMenotti').value],
+                    ["SmartPOS", document.getElementById('smartPosMenotti').value],
+                    ["Adesivos NFC", "R$ 0,00"],
+                    ["Bobinas Marca d'água", document.getElementById('bobinasMenotti').value],
+                    ["Capital de Giro", document.getElementById('capitalGiroMenotti').value],
+                    ["Plataforma VouCurtir", "R$ 0,00"],
+                    ["Plataforma HGFBar", "R$ 0,00"],
+                    ["Plataforma Skycommerce", "R$ 0,00"],
+                    ["Total Investimento", document.getElementById('investimentoMenotti').textContent],
+                    ["Percentual do Investimento", document.getElementById('percentualMenotti').textContent],
+                    ["Participação Acordada", document.getElementById('participacaoMenotti').value + '%']
+                ];
+
+                // Adicionar tabelas ao PDF
+                doc.setFontSize(12);
+                doc.text("Investimentos HGFPAY:", 10, 35);
+                doc.autoTable({
+                    startY: 40,
+                    head: [["Descrição", "Valor"]],
+                    body: dadosHgfpay,
+                    theme: "grid"
+                });
+
+                doc.text("Investimentos OS MENOTTI:", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Descrição", "Valor"]],
+                    body: dadosMenotti,
+                    theme: "grid"
+                });
+
+                // Adicionar observações
+                doc.setFontSize(10);
+                doc.text("Observações:", 10, doc.lastAutoTable.finalY + 15);
+                doc.text("- Os percentuais de investimento são calculados sobre o valor total investido", 15, doc.lastAutoTable.finalY + 25);
+                doc.text("- As participações acordadas foram definidas em comum acordo entre as partes", 15, doc.lastAutoTable.finalY + 35);
+                doc.text("- O capital de giro dos Menotti será pago em 6 parcelas", 15, doc.lastAutoTable.finalY + 45);
+
+                // Adicionar rodapé
+                const dataHoraGeracao = new Date().toLocaleString('pt-BR');
+                doc.setFontSize(8);
+                doc.text(`Relatório gerado em: ${dataHoraGeracao}`, 10, doc.internal.pageSize.height - 10);
+
+                // Salvar o PDF
+                doc.save("proposta-parceria-hgfpay-menotti.pdf");
+
+            } catch (error) {
+                console.error("Erro ao exportar o PDF:", error);
+                alert("Ocorreu um erro ao exportar o PDF. Por favor, tente novamente.");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function calculateBplan() {
+            try {
+                // Obter valores dos inputs
+                const investimentMade = 1278640; // Valor fixo
+                const computador = Number(document.getElementById('computador').value) * 5000 || 0;
+                const celular = Number(document.getElementById('celular').value) * 2000 || 0;
+                const tablet = Number(document.getElementById('tablet').value) * 3000 || 0;
+                const smartPos = Number(document.getElementById('smartPos').value) * 298 || 0;
+
+                // Dados da equipe
+                const techLead = Number(document.getElementById('techLead').value) || 0;
+                const salarioTL = Number(document.getElementById('salarioTL').value) || 0;
+                const dvs = Number(document.getElementById('devs').value) || 0;
+                const salarioDev = Number(document.getElementById('salarioDev').value) || 0;
+                const sac = Number(document.getElementById('sac').value) || 0;
+                const salarioSac = Number(document.getElementById('salarioSac').value) || 0;
+                const servGerais = Number(document.getElementById('servGerais').value) || 0;
+                const salarioSG = Number(document.getElementById('salarioSG').value) || 0;
+
+                // Custos fixos mensais
+                const servidor = Number(document.getElementById('servidor').value) || 0;
+                const aluguel = Number(document.getElementById('aluguel').value) || 0;
+                const aguaEnergia = Number(document.getElementById('aguaEnergia').value) || 0;
+                const telefonia = Number(document.getElementById('telefonia').value) || 0;
+                const suprimento = Number(document.getElementById('suprimento').value) || 0;
+                const contabilidade = Number(document.getElementById('contabilidade').value) || 0;
+
+                // Receitas mensais
+                const receitaTiqueteira = Number(document.getElementById('receitaTiqueteira').value) || 0;
+                const receitaHgfbar = Number(document.getElementById('receitaHgfbar').value) || 0;
+                const receitaSky = Number(document.getElementById('receitaSky').value) || 0;
+
+                // Datas e taxas
+                const dataBP = new Date(document.getElementById('dataBP').value);
+                const inicioOperacao = new Date(document.getElementById('inicioOperacao').value);
+                const taxaCrescimento = Number(document.getElementById('taxaCrescimento').value) / 100 || 0;
+                const tmaAnual = Number(document.getElementById('tma').value) / 100 || 0;
+                const tmaMensal = Math.pow(1 + tmaAnual, 1 / 12) - 1;
+
+                // Cálculos principais
+                const custoFolha = ((techLead * salarioTL) + (dvs * salarioDev) +
+                    (sac * salarioSac) + (servGerais * salarioSG)) * 1.36;
+
+                const custoFixo = servidor + aluguel + aguaEnergia + telefonia +
+                    suprimento + contabilidade + custoFolha;
+
+                const investimentRequired = computador + celular + tablet + smartPos;
+                const workingCapital = custoFixo * 6;
+                const totalInvestiment = investimentMade + investimentRequired + workingCapital;
+
+                // Cálculo de meses até início da operação
+                const mesesAteInicio = Math.ceil((inicioOperacao - dataBP) / (1000 * 60 * 60 * 24 * 30));
+
+                // Cálculo do fluxo de caixa para 60 meses
+                let fluxoCaixa = [];
+                let receitaTotal = receitaTiqueteira + receitaHgfbar + receitaSky;
+                let lucroAcumulado = -totalInvestiment;
+                let breakeven = 0;
+                let payback = 0;
+
+                // Adicionar fluxos negativos até início da operação
+                for (let i = 0; i < mesesAteInicio; i++) {
+                    fluxoCaixa.push(-custoFixo);
+                    lucroAcumulado -= custoFixo;
+                }
+
+                // Adicionar fluxos operacionais
+                for (let i = mesesAteInicio; i < 60; i++) {
+                    const receita = receitaTotal * Math.pow(1 + taxaCrescimento, i - mesesAteInicio);
+                    const lucroMes = receita - custoFixo;
+                    lucroAcumulado += lucroMes;
+                    fluxoCaixa.push(lucroMes);
+
+                    if (lucroAcumulado >= 0 && payback === 0) {
+                        payback = i + 1;
+                    }
+                    if (receita >= custoFixo && breakeven === 0) {
+                        breakeven = i + 1;
+                    }
+                }
+
+                // Cálculo do VPL
+                const vpl = fluxoCaixa.reduce((acumulador, valor, index) => {
+                    return acumulador + (valor / Math.pow(1 + tmaMensal, index + 1));
+                }, -totalInvestiment);
+
+                // Função auxiliar para cálculo do VPL com taxa específica
+                function calcularVPL(taxa, fluxos, investimento) {
+                    return fluxos.reduce((acumulador, valor, index) => {
+                        return acumulador + (valor / Math.pow(1 + taxa, index + 1));
+                    }, -investimento);
+                }
+
+                // Cálculo da TIR usando método da bisseção
+                let taxaMin = -0.99;
+                let taxaMax = 10;
+                let tir = 0;
+                let iteracoes = 0;
+                const precisao = 0.0001;
+
+                while (iteracoes < 1000) {
+                    tir = (taxaMin + taxaMax) / 2;
+                    const vplAtual = calcularVPL(tir, fluxoCaixa, totalInvestiment);
+
+                    if (Math.abs(vplAtual) < precisao) {
+                        break;
+                    }
+
+                    if (vplAtual > 0) {
+                        taxaMin = tir;
+                    } else {
+                        taxaMax = tir;
+                    }
+
+                    iteracoes++;
+                }
+
+                // Converter TIR mensal para anual
+                const tirAnual = (Math.pow(1 + tir, 12) - 1) * 100;
+
+                // Cálculo do lucro médio mensal
+                const lucroTotal = fluxoCaixa.reduce((a, b) => a + b, 0);
+                const grossProfit = lucroTotal / 60;
+
+                // Valuation (método simplificado - múltiplo do VPL)
+                const valuation = vpl * 5;
+
+                // Lucro líquido a valor presente
+                const lucroPresente = fluxoCaixa.reduce((acumulador, valor, index) => {
+                    return acumulador + (valor / Math.pow(1 + tmaMensal, index + 1));
+                }, 0);
+
+                // Formatação dos valores monetários
+                const formatCurrency = (value) => {
+                    return value.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+                };
+
+                // Atualização dos elementos na interface
+                document.getElementById('investimentMade').textContent = formatCurrency(investimentMade);
+                document.getElementById('investimentRequired').textContent = formatCurrency(investimentRequired);
+                document.getElementById('workingCapital').textContent = formatCurrency(workingCapital);
+                document.getElementById('totalInvestiment').textContent = formatCurrency(totalInvestiment);
+                document.getElementById('grossProfit').textContent = formatCurrency(grossProfit);
+                document.getElementById('custoFixo').textContent = formatCurrency(custoFixo);
+                document.getElementById('payback').textContent = `${payback} meses`;
+                document.getElementById('breakevenPoint').textContent = `${breakeven} meses`;
+                document.getElementById('tir').textContent = `${tirAnual.toFixed(2)}%`;
+                document.getElementById('vpl').textContent = formatCurrency(vpl);
+                document.getElementById('valuation').textContent = formatCurrency(valuation);
+                document.getElementById('lucroPresente').textContent = formatCurrency(lucroPresente);
+
+            } catch (error) {
+                console.error('Erro no cálculo:', error);
+                alert('Ocorreu um erro ao realizar os cálculos. Verifique os dados inseridos.');
+            }
+        }
+
+
+        function clearFieldsBplan() {
+            // Limpar campos de entrada da equipe
+            document.getElementById('techLead').value = '';
+            document.getElementById('salarioTL').value = '';
+            document.getElementById('devs').value = '';
+            document.getElementById('salarioDev').value = '';
+            document.getElementById('sac').value = '';
+            document.getElementById('salarioSac').value = '';
+            document.getElementById('servGerais').value = '';
+            document.getElementById('salarioSG').value = '';
+
+            // Limpar campos de investimentos adicionais
+            document.getElementById('computador').value = '';
+            document.getElementById('celular').value = '';
+            document.getElementById('tablet').value = '';
+
+            // Limpar campos de receitas
+            document.getElementById('receitaTiqueteira').value = '';
+            document.getElementById('receitaHgfbar').value = '';
+            document.getElementById('receitaSky').value = '';
+
+            // Limpar campos de datas e taxas
+            document.getElementById('dataBP').value = '';
+            document.getElementById('inicioOperacao').value = '';
+            document.getElementById('taxaCrescimento').value = '';
+
+            // Limpar campos de custos fixos
+            document.getElementById('servidor').value = '';
+            document.getElementById('aluguel').value = '';
+            document.getElementById('aguaEnergia').value = '';
+            document.getElementById('telefonia').value = '';
+            document.getElementById('suprimento').value = '';
+            document.getElementById('contabilidade').value = '';
+
+            // Limpar campo de TMA
+            document.getElementById('tma').value = '';
+
+            // Limpar resultados
+            document.getElementById('investimentMade').textContent = 'R$ 0,00';
+            document.getElementById('investimentRequired').textContent = 'R$ 0,00';
+            document.getElementById('workingCapital').textContent = 'R$ 0,00';
+            document.getElementById('totalInvestiment').textContent = 'R$ 0,00';
+            document.getElementById('grossProfit').textContent = 'R$ 0,00';
+            document.getElementById('custoFixo').textContent = 'R$ 0,00';
+            document.getElementById('payback').textContent = '0 meses';
+            document.getElementById('breakevenPoint').textContent = '0 meses';
+            document.getElementById('tir').textContent = '0,00%';
+            document.getElementById('vpl').textContent = 'R$ 0,00';
+            document.getElementById('valuation').textContent = 'R$ 0,00';
+            document.getElementById('lucroPresente').textContent = 'R$ 0,00';
+        }
+
+        async function exportToPDFBplan() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Configuração do cabeçalho
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text("ANÁLISE DE VIABILIDADE ECONÔMICA", 105, 15, { align: "center" });
+
+                // Data do relatório
+                const dataAtual = new Date().toLocaleDateString('pt-BR');
+                doc.setFontSize(10);
+                doc.text(`Data do relatório: ${dataAtual}`, 10, 25);
+
+                // Dados de entrada do projeto
+                const dadosEntrada = [
+                    ["Data do Planejamento", document.getElementById('dataBP').value],
+                    ["Data Início Operação", document.getElementById('inicioOperacao').value],
+                    ["Taxa de Crescimento Mensal", document.getElementById('taxaCrescimento').value + "%"],
+                    ["TMA (Taxa Mínima de Atratividade)", document.getElementById('tma').value + "%"]
+                ];
+
+                // Dados da equipe
+                const dadosEquipe = [
+                    ["Tech Lead", `${document.getElementById('techLead').value} × R$ ${document.getElementById('salarioTL').value}`],
+                    ["Desenvolvedores", `${document.getElementById('devs').value} × R$ ${document.getElementById('salarioDev').value}`],
+                    ["Atendimento ao Cliente", `${document.getElementById('sac').value} × R$ ${document.getElementById('salarioSac').value}`],
+                    ["Serviços Gerais", `${document.getElementById('servGerais').value} × R$ ${document.getElementById('salarioSG').value}`]
+                ];
+
+                // Custos fixos mensais
+                const custosMensais = [
+                    ["Servidor", document.getElementById('servidor').value],
+                    ["Aluguel", document.getElementById('aluguel').value],
+                    ["Água e Energia", document.getElementById('aguaEnergia').value],
+                    ["Telefonia e Internet", document.getElementById('telefonia').value],
+                    ["Material de Suprimento", document.getElementById('suprimento').value],
+                    ["Contabilidade", document.getElementById('contabilidade').value]
+                ];
+
+                // Receitas mensais
+                const receitasMensais = [
+                    ["Receita Tiqueteira", document.getElementById('receitaTiqueteira').value],
+                    ["Receita HGFBar", document.getElementById('receitaHgfbar').value],
+                    ["Receita Skycommerce", document.getElementById('receitaSky').value]
+                ];
+
+                // Resultados da análise
+                const resultados = [
+                    ["Investimento Inicial Realizado", document.getElementById('investimentMade').textContent],
+                    ["Investimento Inicial Necessário", document.getElementById('investimentRequired').textContent],
+                    ["Capital de Giro", document.getElementById('workingCapital').textContent],
+                    ["Investimento Total", document.getElementById('totalInvestiment').textContent],
+                    ["Lucro Bruto Médio Mensal", document.getElementById('grossProfit').textContent],
+                    ["Custo Fixo Mensal", document.getElementById('custoFixo').textContent],
+                    ["Payback", document.getElementById('payback').textContent],
+                    ["Ponto de Equilíbrio", document.getElementById('breakevenPoint').textContent],
+                    ["TIR (Taxa Interna de Retorno)", document.getElementById('tir').textContent],
+                    ["VPL (Valor Presente Líquido)", document.getElementById('vpl').textContent],
+                    ["Valuation do Projeto", document.getElementById('valuation').textContent],
+                    ["Lucro Líquido Total (VP)", document.getElementById('lucroPresente').textContent]
+                ];
+
+                // Adicionar as tabelas ao PDF
+                doc.setFontSize(12);
+                doc.text("Dados do Projeto:", 10, 35);
+                doc.autoTable({
+                    startY: 40,
+                    head: [["Descrição", "Valor"]],
+                    body: dadosEntrada,
+                    theme: "grid"
+                });
+
+                doc.text("Equipe:", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Cargo", "Quantidade × Salário"]],
+                    body: dadosEquipe,
+                    theme: "grid"
+                });
+
+                doc.text("Custos Fixos Mensais:", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Descrição", "Valor"]],
+                    body: custosMensais,
+                    theme: "grid"
+                });
+
+                // Adicionar nova página se necessário
+                if (doc.lastAutoTable.finalY > 200) {
+                    doc.addPage();
+                    doc.text("Receitas Mensais:", 10, 20);
+                    doc.autoTable({
+                        startY: 25,
+                        head: [["Fonte", "Valor"]],
+                        body: receitasMensais,
+                        theme: "grid"
+                    });
+                } else {
+                    doc.text("Receitas Mensais:", 10, doc.lastAutoTable.finalY + 10);
+                    doc.autoTable({
+                        startY: doc.lastAutoTable.finalY + 15,
+                        head: [["Fonte", "Valor"]],
+                        body: receitasMensais,
+                        theme: "grid"
+                    });
+                }
+
+                // Adicionar nova página para os resultados
+                doc.addPage();
+                doc.setFontSize(14);
+                doc.text("RESULTADOS DA ANÁLISE", 105, 20, { align: "center" });
+                doc.autoTable({
+                    startY: 30,
+                    head: [["Indicador", "Valor"]],
+                    body: resultados,
+                    theme: "grid"
+                });
+
+                // Adicionar observações
+                doc.setFontSize(10);
+                doc.text("Observações:", 10, doc.lastAutoTable.finalY + 15);
+                doc.text("- Os valores apresentados são baseados nas premissas e dados fornecidos", 15, doc.lastAutoTable.finalY + 25);
+                doc.text("- O valuation considera múltiplos de mercado e projeções de crescimento", 15, doc.lastAutoTable.finalY + 35);
+                doc.text("- Análise realizada considerando um horizonte de 5 anos", 15, doc.lastAutoTable.finalY + 45);
+
+                // Adicionar rodapé com data e hora
+                const dataHoraGeracao = new Date().toLocaleString('pt-BR');
+                doc.setFontSize(8);
+                doc.text(`Relatório gerado em: ${dataHoraGeracao}`, 10, doc.internal.pageSize.height - 10);
+
+                // Salvar o PDF
+                doc.save("analise-viabilidade-economica.pdf");
+
+            } catch (error) {
+                console.error("Erro ao exportar o PDF:", error);
+                alert("Ocorreu um erro ao exportar o PDF. Por favor, tente novamente.");
+            }
+        }
+
+        function calculateCase() {
+            try {
+                // Função auxiliar para validar porcentagens com margem de erro
+                function validatePercentageSum(values, description) {
+                    const sum = values.reduce((a, b) => a + b, 0);
+                    if (Math.abs(sum - 100) > 0.01) {
+                        alert(`A soma das porcentagens de ${description} deve ser 100% (atual: ${sum.toFixed(2)}%)`);
+                        return false;
+                    }
+                    return true;
+                }
+
+                // Validação das porcentagens de venda
+                const vendaOn = parseFloat(document.getElementById('vendaOn').value) || 0;
+                const vendaFisico = parseFloat(document.getElementById('vendaFisico').value) || 0;
+                const vendaDireta = parseFloat(document.getElementById('vendaDireta').value) || 0;
+
+                if (!validatePercentageSum([vendaOn, vendaFisico, vendaDireta], 'venda')) return;
+
+                // Validação dos meios de pagamento online
+                const pixOn = parseFloat(document.getElementById('pixOn').value) || 0;
+                const creditoOn = parseFloat(document.getElementById('creditoOn').value) || 0;
+                const credito3On = parseFloat(document.getElementById('credito3On').value) || 0;
+                const credito6On = parseFloat(document.getElementById('credito6On').value) || 0;
+                const credito12On = parseFloat(document.getElementById('credito12On').value) || 0;
+
+                if (vendaOn > 0 && !validatePercentageSum([pixOn, creditoOn, credito3On, credito6On, credito12On], 'pagamento online')) return;
+
+                // Validação dos meios de pagamento PDV
+                const dinheiroFisico = parseFloat(document.getElementById('dinheiroFisico').value) || 0;
+                const pixFisico = parseFloat(document.getElementById('pixFisico').value) || 0;
+                const debitoFisico = parseFloat(document.getElementById('debitoFisico').value) || 0;
+                const creditoFisico = parseFloat(document.getElementById('creditoFisico').value) || 0;
+                const credito3Fisico = parseFloat(document.getElementById('credito3Fisico').value) || 0;
+                const credito6Fisico = parseFloat(document.getElementById('credito6Fisico').value) || 0;
+                const credito12Fisico = parseFloat(document.getElementById('credito12Fisico').value) || 0;
+
+                if (vendaFisico > 0 && !validatePercentageSum([dinheiroFisico, pixFisico, debitoFisico, creditoFisico, credito3Fisico, credito6Fisico, credito12Fisico], 'pagamento PDV')) return;
+
+                const meiaEntrada = parseFloat(document.getElementById('meiaEntrada').value) || 0;
+                const taxaConv = parseFloat(document.getElementById('taxaConv').value) || 0;
+                const rebate = parseFloat(document.getElementById('rebate').value) || 0;
+
+                // Função para arredondar valores
+                const round = (value) => Number(value.toFixed(2));
+
+                // Cálculo valor ingresso
+                const ticketPrice = round((360 * (100 - meiaEntrada) / 100) + (360 * meiaEntrada / 100 / 2));
+
+                // Cálculos principais
+                const totalTickets = round(ticketPrice * 3400);
+                const partialTickets = round(ticketPrice * 2065);
+
+                const totalFee = round(totalTickets * (vendaOn / 100) * (taxaConv / 100));
+                const partialFee = round(partialTickets * (vendaOn / 100) * (taxaConv / 100));
+
+                // Cálculo Taxa Transacional
+                const totalTransectionFee = round(
+                    ((totalTickets * vendaOn / 100 * pixOn / 100) * 0.005) +
+                    (totalTickets * vendaOn / 100 * creditoOn / 100 * 0.041) +
+                    (totalTickets * vendaOn / 100 * credito3On / 100 * 0.1479) +
+                    (totalTickets * vendaOn / 100 * credito6On / 100 * 0.2267) +
+                    (totalTickets * vendaOn / 100 * credito12On / 100 * 0.3934) +
+                    (totalTickets * vendaDireta / 100 * 0.0045)
+                );
+
+                const partialTransectionFee = round(
+                    ((totalTickets * vendaOn / 100 * pixOn / 100) * 0.005) +
+                    (partialTickets * vendaOn / 100 * creditoOn / 100 * 0.041) +
+                    (partialTickets * vendaOn / 100 * credito3On / 100 * 0.1479) +
+                    (partialTickets * vendaOn / 100 * credito6On / 100 * 0.2267) +
+                    (partialTickets * vendaOn / 100 * credito12On / 100 * 0.3934) +
+                    (partialTickets * vendaDireta / 100 * 0.0045)
+                );
+
+                // Cálculo taxa venda física
+                const totalPdvFee = round(
+                    (totalTickets * vendaFisico / 100 * pixFisico / 100 * 0.0199) +
+                    (totalTickets * vendaFisico / 100 * debitoFisico / 100 * 0.0199) +
+                    (totalTickets * vendaFisico / 100 * creditoFisico / 100 * 0.0399) +
+                    (totalTickets * vendaFisico / 100 * credito3Fisico / 100 * 0.0599) +
+                    (totalTickets * vendaFisico / 100 * credito6Fisico / 100 * 0.1) +
+                    (totalTickets * vendaFisico / 100 * credito12Fisico / 100 * 0.2)
+                );
+
+                const partialPdvFee = round(
+                    (partialTickets * vendaFisico / 100 * pixFisico / 100 * 0.0199) +
+                    (partialTickets * vendaFisico / 100 * debitoFisico / 100 * 0.0199) +
+                    (partialTickets * vendaFisico / 100 * creditoFisico / 100 * 0.0399) +
+                    (partialTickets * vendaFisico / 100 * credito3Fisico / 100 * 0.0599) +
+                    (partialTickets * vendaFisico / 100 * credito6Fisico / 100 * 0.1) +
+                    (partialTickets * vendaFisico / 100 * credito12Fisico / 100 * 0.2)
+                );
+
+                // Cálculo Receita Bruta tiqueteira
+                const totalGrossRevenue = round(totalFee + totalTransectionFee + totalPdvFee);
+                const partialGrossRevenue = round(partialFee + partialTransectionFee + partialPdvFee);
+
+                //Cálculo Faturamento Bruto Plataforma
+                const totalRevenue = round(totalTickets + totalGrossRevenue);
+                const partialRevenue = round(partialTickets + partialGrossRevenue);
+
+
+                // Cálculo custo gatway
+                const totalGatwayCost = round(
+                    ((totalTickets * vendaOn / 100 * pixOn / 100) * 0.005) +
+                    (totalTickets * vendaOn / 100 * creditoOn / 100 * 0.0297) +
+                    (totalTickets * vendaOn / 100 * credito3On / 100 * 0.0527) +
+                    (totalTickets * vendaOn / 100 * credito6On / 100 * 0.0739) +
+                    (totalTickets * vendaOn / 100 * credito12On / 100 * 0.1151)
+                );
+
+                const partialGatwayCost = round(
+                    ((partialTickets * vendaOn / 100 * pixOn / 100) * 0.005) +
+                    (partialTickets * vendaOn / 100 * creditoOn / 100 * 0.0297) +
+                    (partialTickets * vendaOn / 100 * credito3On / 100 * 0.0527) +
+                    (partialTickets * vendaOn / 100 * credito6On / 100 * 0.0739) +
+                    (partialTickets * vendaOn / 100 * credito12On / 100 * 0.1151)
+                );
+                // Cálculo custo aquirente
+                const totalAdquirenteCost = round(
+                    ((totalTickets * vendaFisico / 100 * pixFisico / 100) * 0.005) +
+                    (totalTickets * vendaFisico / 100 * creditoFisico / 100 * 0.0249) +
+                    (totalTickets * vendaFisico / 100 * debitoFisico / 100 * 0.0089) +
+                    (totalTickets * vendaFisico / 100 * credito3Fisico / 100 * 0.0439) +
+                    (totalTickets * vendaFisico / 100 * credito6Fisico / 100 * 0.0639) +
+                    (totalTickets * vendaFisico / 100 * credito12Fisico / 100 * 0.1151)
+                );
+
+                const partialAdquirenteCost = round(
+                    ((partialTickets * vendaFisico / 100 * pixFisico / 100) * 0.005) +
+                    (partialTickets * vendaFisico / 100 * creditoFisico / 100 * 0.0249) +
+                    (partialTickets * vendaFisico / 100 * debitoFisico / 100 * 0.0089) +
+                    (partialTickets * vendaFisico / 100 * credito3Fisico / 100 * 0.0439) +
+                    (partialTickets * vendaFisico / 100 * credito6Fisico / 100 * 0.0639) +
+                    (partialTickets * vendaFisico / 100 * credito12Fisico / 100 * 0.1151)
+                );
+
+
+                const totalRebate = round(totalTickets * (rebate / 100));
+                const partialRebate = round(partialTickets * (rebate / 100));
+
+
+                //Cálculo custo total Tiqueteira
+                const totalCost = round(totalRebate + totalAdquirenteCost + totalGatwayCost);
+                const partialCost = round(partialRebate + partialGatwayCost + partialAdquirenteCost);
+
+                //Cálculo resultado operacional
+                const totalNetIncome = round(totalGrossRevenue - totalCost);
+                const partialNetIncome = round(partialGrossRevenue - partialCost);
+
+                //Cálculo imposto
+                const totalTaxes = round(totalGrossRevenue * 0.19);
+                const partialTaxes = round(partialGrossRevenue * 0.19);
+
+                //Cálculo Lucro Líquido
+                const totalProfit = round(totalNetIncome - totalTaxes);
+                const partialProfit = round(partialNetIncome - partialTaxes);
+
+                console.log({
+                    ticketPrice,
+                    totalTickets,
+                    partialTickets,
+                    totalFee,
+                    partialFee,
+                    totalTransectionFee,
+                    partialTransectionFee,
+                    totalPdvFee,
+                    partialPdvFee,
+                    totalGrossRevenue,
+                    partialGrossRevenue,
+                    totalGatwayCost,
+                    partialGatwayCost,
+                    totalAdquirenteCost,
+                    partialAdquirenteCost,
+                    totalRebate,
+                    partialRebate,
+                    totalCost,
+                    partialCost,
+                    totalNetIncome,
+                    partialNetIncome,
+                    totalTaxes,
+                    partialTaxes,
+                    totalProfit,
+                    partialProfit
+                });
+
+                // Formatação dos resultados
+                const formatCurrency = (value) => {
+                    if (typeof value !== 'number' || isNaN(value)) {
+                        return 'R$ 0,00';
+                    }
+                    return value.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+                };
+
+                // Função para atualizar elementos com segurança
+                const updateElement = (id, value) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = formatCurrency(value);
+                    }
+                };
+
+                // Atualização dos resultados parciais
+                updateElement('partialRevenue', partialRevenue);
+                updateElement('partialTickets', partialTickets);
+                updateElement('partialGrossRevenue', partialGrossRevenue);
+                updateElement('partialCost', partialCost);
+                updateElement('partialNetIncome', partialNetIncome);
+                updateElement('partialTaxes', partialTaxes);
+                updateElement('partialProfit', partialProfit);
+
+                // Atualização dos resultados totais
+                updateElement('totalRevenue', totalRevenue);
+                updateElement('totalTickets', totalTickets);
+                updateElement('totalGrossRevenue', totalGrossRevenue);
+                updateElement('totalCost', totalCost);
+                updateElement('totalNetIncome', totalNetIncome);
+                updateElement('totalTaxes', totalTaxes);
+                updateElement('totalProfit', totalProfit);
+
+            } catch (error) {
+                console.error('Erro ao calcular:', error);
+                alert('Ocorreu um erro ao realizar os cálculos. Por favor, verifique os valores inseridos.');
+            }
+        }
+
+        function clearFieldsCase() {
+            // Limpar campos de entrada
+            document.getElementById('vendaOn').value = '';
+            document.getElementById('vendaFisico').value = '';
+            document.getElementById('vendaDireta').value = '';
+            document.getElementById('meiaEntrada').value = '';
+
+            // Limpar campos de meios de pagamento online
+            document.getElementById('pixOn').value = '';
+            document.getElementById('creditoOn').value = '';
+            document.getElementById('credito3On').value = '';
+            document.getElementById('credito6On').value = '';
+            document.getElementById('credito12On').value = '';
+
+            // Limpar campos de meios de pagamento PDV
+            document.getElementById('dinheiroFisico').value = '';
+            document.getElementById('pixFisico').value = '';
+            document.getElementById('debitoFisico').value = '';
+            document.getElementById('creditoFisico').value = '';
+            document.getElementById('credito3Fisico').value = '';
+            document.getElementById('credito6Fisico').value = '';
+            document.getElementById('credito12Fisico').value = '';
+
+            // Limpar campos de taxas
+            document.getElementById('taxaConv').value = '';
+            document.getElementById('rebate').value = '';
+
+            // Limpar resultados parciais
+            document.getElementById('partialRevenue').textContent = 'R$ 0,00';
+            document.getElementById('partialTickets').textContent = 'R$ 0,00';
+            document.getElementById('partialGrossRevenue').textContent = 'R$ 0,00';
+            document.getElementById('partialCost').textContent = 'R$ 0,00';
+            document.getElementById('partialNetIncome').textContent = 'R$ 0,00';
+            document.getElementById('partialTaxes').textContent = 'R$ 0,00';
+            document.getElementById('partialProfit').textContent = 'R$ 0,00';
+
+            // Limpar resultados totais
+            document.getElementById('totalRevenue').textContent = 'R$ 0,00';
+            document.getElementById('totalTickets').textContent = 'R$ 0,00';
+            document.getElementById('totalGrossRevenue').textContent = 'R$ 0,00';
+            document.getElementById('totalCost').textContent = 'R$ 0,00';
+            document.getElementById('totalNetIncome').textContent = 'R$ 0,00';
+            document.getElementById('totalTaxes').textContent = 'R$ 0,00';
+            document.getElementById('totalProfit').textContent = 'R$ 0,00';
+        }
+
+        async function exportToPDFCase() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Configuração do cabeçalho
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text("RELATÓRIO CASE - CESAR MENOTTI E FABIANO", 105, 15, { align: "center" });
+
+                // Dados Gerais do Evento
+                const dadosGerais = [
+                    ["Total de ingressos disponíveis", "3.400"],
+                    ["Total de ingressos vendidos", "2.065"],
+                    ["Percentual de venda atual", "60,74%"]
+                ];
+
+                // Coleta dos dados de entrada
+                const dadosEntrada = [
+                    ["Percentual de Venda Online", document.getElementById("vendaOn").value + "%"],
+                    ["Percentual de Venda PDV", document.getElementById("vendaFisico").value + "%"],
+                    ["Percentual de Venda Direta/Cortesia", document.getElementById("vendaDireta").value + "%"],
+                    ["Percentual Meia Entrada", document.getElementById("meiaEntrada").value + "%"],
+                    ["Taxa de Conveniência", document.getElementById("taxaConv").value + "%"],
+                    ["Rebate Artista", document.getElementById("rebate").value + "%"]
+                ];
+
+                // Coleta dos dados de meios de pagamento online
+                const pagamentosOnline = [
+                    ["PIX Online", document.getElementById("pixOn").value + "%"],
+                    ["Crédito à Vista Online", document.getElementById("creditoOn").value + "%"],
+                    ["Crédito 3x Online", document.getElementById("credito3On").value + "%"],
+                    ["Crédito 6x Online", document.getElementById("credito6On").value + "%"],
+                    ["Crédito 12x Online", document.getElementById("credito12On").value + "%"]
+                ];
+
+                // Coleta dos dados de meios de pagamento PDV
+                const pagamentosPDV = [
+                    ["Dinheiro PDV", document.getElementById("dinheiroFisico").value + "%"],
+                    ["PIX PDV", document.getElementById("pixFisico").value + "%"],
+                    ["Débito PDV", document.getElementById("debitoFisico").value + "%"],
+                    ["Crédito à Vista PDV", document.getElementById("creditoFisico").value + "%"],
+                    ["Crédito 3x PDV", document.getElementById("credito3Fisico").value + "%"],
+                    ["Crédito 6x PDV", document.getElementById("credito6Fisico").value + "%"],
+                    ["Crédito 12x PDV", document.getElementById("credito12Fisico").value + "%"]
+                ];
+
+                // Coleta dos resultados parciais
+                const resultadosParciais = [
+                    ["Faturamento Total Bruto", document.getElementById("partialRevenue").textContent],
+                    ["Valor dos Ingressos", document.getElementById("partialTickets").textContent],
+                    ["Receita Bruta Tiqueteira", document.getElementById("partialGrossRevenue").textContent],
+                    ["Despesa Bruta Tiqueteira", document.getElementById("partialCost").textContent],
+                    ["Resultado Operacional", document.getElementById("partialNetIncome").textContent],
+                    ["Impostos", document.getElementById("partialTaxes").textContent],
+                    ["Resultado Líquido Final", document.getElementById("partialProfit").textContent]
+                ];
+
+                // Coleta dos resultados totais esperados
+                const resultadosTotais = [
+                    ["Faturamento Total Bruto", document.getElementById("totalRevenue").textContent],
+                    ["Valor dos Ingressos", document.getElementById("totalTickets").textContent],
+                    ["Receita Bruta Tiqueteira", document.getElementById("totalGrossRevenue").textContent],
+                    ["Despesa Bruta Tiqueteira", document.getElementById("totalCost").textContent],
+                    ["Resultado Operacional", document.getElementById("totalNetIncome").textContent],
+                    ["Impostos", document.getElementById("totalTaxes").textContent],
+                    ["Resultado Líquido Final", document.getElementById("totalProfit").textContent]
+                ];
+
+                // Adicionar as tabelas ao PDF
+                doc.setFontSize(12);
+                doc.text("Dados Gerais do Evento:", 10, 30);
+                doc.autoTable({
+                    startY: 35,
+                    head: [["Descrição", "Valor"]],
+                    body: dadosGerais,
+                    theme: "grid",
+                    margin: { top: 35 }
+                });
+
+                doc.text("Parâmetros de Venda:", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Descrição", "Valor"]],
+                    body: dadosEntrada,
+                    theme: "grid"
+                });
+
+                doc.text("Meios de Pagamento Online:", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Descrição", "Percentual"]],
+                    body: pagamentosOnline,
+                    theme: "grid"
+                });
+
+                doc.text("Meios de Pagamento PDV:", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Descrição", "Percentual"]],
+                    body: pagamentosPDV,
+                    theme: "grid"
+                });
+
+                // Adicionar nova página para os resultados
+                doc.addPage();
+
+                doc.setFontSize(14);
+                doc.text("Resultados Parciais (Vendas Atuais):", 10, 20);
+                doc.autoTable({
+                    startY: 25,
+                    head: [["Descrição", "Valor"]],
+                    body: resultadosParciais,
+                    theme: "grid"
+                });
+
+                doc.text("Resultados Esperados (Venda Total):", 10, doc.lastAutoTable.finalY + 10);
+                doc.autoTable({
+                    startY: doc.lastAutoTable.finalY + 15,
+                    head: [["Descrição", "Valor"]],
+                    body: resultadosTotais,
+                    theme: "grid"
+                });
+
+                // Adicionar data e hora da geração do relatório
+                const dataHora = new Date().toLocaleString('pt-BR');
+                doc.setFontSize(10);
+                doc.text(`Relatório gerado em: ${dataHora}`, 10, doc.internal.pageSize.height - 10);
+
+                // Salvar o PDF
+                doc.save("relatorio-case-cesar-menotti-fabiano.pdf");
+
+            } catch (error) {
+                console.error("Erro ao exportar o PDF:", error);
+                alert("Ocorreu um erro ao exportar o PDF. Por favor, tente novamente.");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        function calculateHgfBar() {
+            // Obtenção das entradas do formulário
+            const events = parseFloat(document.getElementById('events').value) || 0; // Quantidade de Eventos Mensais (a)
+            const audience = parseFloat(document.getElementById('audience').value) || 0; // Público Médio por Evento (b)
+            const averageConsumption = parseFloat(document.getElementById('averageConsumption').value) || 0; // Consumo médio por pessoa (c)
+            const smartPOS = parseFloat(document.getElementById('smartPOS').value) || 0; // Quantidade de SmartPOS por evento (d)
+            const creditRate = parseFloat(document.getElementById('creditRate').value) / 100 || 0; // % Faturamento Crédito (e)
+            const debitRate = parseFloat(document.getElementById('debitRate').value) / 100 || 0; // % Faturamento Débito (f)
+            const pixRate = parseFloat(document.getElementById('pixRate').value) / 100 || 0; // % Faturamento PIX (g)
+            const cashRate = parseFloat(document.getElementById('cashRate').value) / 100 || 0; // % Faturamento Dinheiro (h)
+
+            // Cálculo do Faturamento Total Bruto (k)
+            const grossRevenue =
+                ((events * audience * averageConsumption) * creditRate * 0.0389) +
+                ((events * audience * averageConsumption) * debitRate * 0.0199) +
+                ((events * audience * averageConsumption) * pixRate * 0.0129) +
+                (events * smartPOS * 89.90);
+
+            // Cálculo do Custo Operacional Bruto (l)
+            const operationalCost =
+                ((events * audience * averageConsumption) * creditRate * 0.0249) +
+                ((events * audience * averageConsumption) * debitRate * 0.0089) +
+                ((events * audience * averageConsumption) * pixRate * 0.005);
+
+            // Cálculo do Resultado Operacional (m)
+            const operationalResult = grossRevenue - operationalCost;
+
+            // Cálculo dos Impostos (n)
+            const taxes = grossRevenue * 0.19;
+
+            // Cálculo do Resultado Líquido Final (o)
+            const netResult = operationalResult - taxes;
+
+            // Resultados por Evento
+            const eventGrossRevenue = grossRevenue / events || 0;
+            const eventOperationalCost = operationalCost / events || 0;
+            const eventOperationalResult = operationalResult / events || 0;
+            const eventTaxes = taxes / events || 0;
+            const eventNetResult = netResult / events || 0;
+
+            // Formatação dos resultados para exibição com separadores de milhares
+            const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Exibição dos resultados na interface
+            document.getElementById('grossRevenue').textContent = formatCurrency(grossRevenue);
+            document.getElementById('operationalCost').textContent = formatCurrency(operationalCost);
+            document.getElementById('operationalResult').textContent = formatCurrency(operationalResult);
+            document.getElementById('taxes').textContent = formatCurrency(taxes);
+            document.getElementById('netResult').textContent = formatCurrency(netResult);
+
+            document.getElementById('eventGrossRevenue').textContent = formatCurrency(eventGrossRevenue);
+            document.getElementById('eventOperationalCost').textContent = formatCurrency(eventOperationalCost);
+            document.getElementById('eventOperationalResult').textContent = formatCurrency(eventOperationalResult);
+            document.getElementById('eventTaxes').textContent = formatCurrency(eventTaxes);
+            document.getElementById('eventNetResult').textContent = formatCurrency(eventNetResult);
+        }
+
+        function clearFieldsHgfBar() {
+            // Limpando os campos de entrada
+            document.getElementById('events').value = '';
+            document.getElementById('audience').value = '';
+            document.getElementById('averageConsumption').value = '';
+            document.getElementById('smartPOS').value = '';
+            document.getElementById('creditRate').value = '';
+            document.getElementById('debitRate').value = '';
+            document.getElementById('pixRate').value = '';
+            document.getElementById('cashRate').value = '';
+            document.getElementById('fullstackDevs').value = '';
+            document.getElementById('supportStaff').value = '';
+
+            // Limpando os campos de resultados
+            document.getElementById('grossRevenue').textContent = 'R$ 0,00';
+            document.getElementById('operationalCost').textContent = 'R$ 0,00';
+            document.getElementById('operationalResult').textContent = 'R$ 0,00';
+            document.getElementById('taxes').textContent = 'R$ 0,00';
+            document.getElementById('netResult').textContent = 'R$ 0,00';
+
+            document.getElementById('eventGrossRevenue').textContent = 'R$ 0,00';
+            document.getElementById('eventOperationalCost').textContent = 'R$ 0,00';
+            document.getElementById('eventOperationalResult').textContent = 'R$ 0,00';
+            document.getElementById('eventTaxes').textContent = 'R$ 0,00';
+            document.getElementById('eventNetResult').textContent = 'R$ 0,00';
+        }
+
+        async function exportToPDFHgfBar() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Adicionar o cabeçalho
+                doc.setFontSize(16);
+                doc.setFont("helvetica", "bold");
+                doc.text("RELATÓRIO HGFBAR", 105, 15, { align: "center" });
+
+                // Dados do usuário (tabela 1)
+                const userInputs = [
+                    ["Quantidade de Eventos Mensais", document.getElementById("events").value || "0"],
+                    ["Público Médio por Evento", document.getElementById("audience").value || "0"],
+                    ["Consumo Médio por Pessoa (R$)", document.getElementById("averageConsumption").value || "0"],
+                    ["Quantidade de SmartPOS por Evento", document.getElementById("smartPOS").value || "0"],
+                    ["% Faturamento Crédito (%)", document.getElementById("creditRate").value || "0"],
+                    ["% Faturamento Débito (%)", document.getElementById("debitRate").value || "0"],
+                    ["% Faturamento PIX (%)", document.getElementById("pixRate").value || "0"],
+                    ["% Faturamento Dinheiro (%)", document.getElementById("cashRate").value || "0"],
+                    ["Desenvolvedores Fullstack", document.getElementById("fullstackDevs").value || "0"],
+                    ["Atendentes de Suporte", document.getElementById("supportStaff").value || "0"],
+                ];
+
+                // Resultados (tabela 2)
+                const results = document.querySelector(".results");
+                const resultElements = results.querySelectorAll("p");
+                const resultData = [];
+                resultElements.forEach((result) => {
+                    const [label, value] = result.innerText.split(": ");
+                    resultData.push([label, value || ""]);
+                });
+
+                // Adicionar tabela de dados do usuário
+                doc.setFontSize(12);
+                doc.text("Dados Utilizados na Simulação:", 10, 30);
+                doc.autoTable({
+                    startY: 35,
+                    head: [["Descrição", "Valor"]],
+                    body: userInputs,
+                    theme: "grid",
+                });
+
+                // Adicionar tabela de resultados
+                const nextTableY = doc.lastAutoTable.finalY + 10; // Posição da próxima tabela
+                doc.text("Resultados da Simulação:", 10, nextTableY);
+                doc.autoTable({
+                    startY: nextTableY + 5,
+                    head: [["Descrição", "Valor"]],
+                    body: resultData,
+                    theme: "grid",
+                });
+
+                // Salvar o PDF com um nome específico
+                doc.save("relatorio-simulacao-hgfbar.pdf");
+            } catch (error) {
+                console.error("Erro ao exportar o PDF:", error);
+                alert("Ocorreu um erro ao exportar o PDF. Verifique o console para mais detalhes.");
+            }
+        }
+
+        function calculateResults() {
+            const a = Number(document.getElementById('events').value) || 0;
+            const b = Number(document.getElementById('audience').value) || 0;
+            const c = Number(document.getElementById('ticketPrice').value) || 0;
+            const d = Number(document.getElementById('onlineRate').value) / 100 || 0;
+            const e = Number(document.getElementById('physicalRate').value) / 100 || 0;
+            const f = Number(document.getElementById('directRate').value) / 100 || 0;
+            const g = Number(document.getElementById('threeInstallments').value) / 100 || 0;
+            const h = Number(document.getElementById('sixInstallments').value) / 100 || 0;
+            const i = Number(document.getElementById('twelveInstallments').value) / 100 || 0;
+            const j = Number(document.getElementById('convenienceFee').value) / 100 || 0;
+            const k = Number(document.getElementById('producerRebate').value) / 100 || 0;
+            const l = Number(document.getElementById('cto').value) || 0;
+            const m = Number(document.getElementById('fullstackDevs').value) || 0;
+            const n = Number(document.getElementById('backendDev').value) || 0;
+            const o = Number(document.getElementById('frontendDev').value) || 0;
+            const p = Number(document.getElementById('supportStaff').value) || 0;
+
+            const q = (((a * b * c) * d) * (j + 0.015)) + (((a * b * c) * e) * 0.04) +
+                (((a * b) * f) * 0.40) + ((((a * b * c) * d) * g) * 0.10) +
+                ((((a * b * c) * d) * h) * 0.15) + ((((a * b * c) * d) * i) * 0.25);
+
+            const r = l + (m * 7500) + (n * 3500) + (o * 4000) + (p * 2000) +
+                (((a * b * c) * d) * 0.0319) + (((a * b * c) * d) * k) +
+                (((a * b * c) * e) * 0.0199) + ((((a * b * c) * d) * g) * 0.06) +
+                ((((a * b * c) * d) * h) * 0.08) + ((((a * b * c) * d) * i) * 0.12);
+
+            const s = q - r;
+            const t = q * 0.19;
+            const u = s - t;
+
+            const eventGrossRevenue = q / a;
+            const eventOperationalCost = r / a;
+            const eventOperationalResult = s / a;
+            const eventTaxes = t / a;
+            const eventNetResult = u / a;
+
+            // Formatar os valores para o formato brasileiro com separadores de milhares
+            const formatCurrency = (value) => value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            document.getElementById('grossRevenue').innerText = formatCurrency(q);
+            document.getElementById('operationalCost').innerText = formatCurrency(r);
+            document.getElementById('operationalResult').innerText = formatCurrency(s);
+            document.getElementById('taxes').innerText = formatCurrency(t);
+            document.getElementById('netResult').innerText = formatCurrency(u);
+
+            document.getElementById('eventGrossRevenue').innerText = formatCurrency(eventGrossRevenue);
+            document.getElementById('eventOperationalCost').innerText = formatCurrency(eventOperationalCost);
+            document.getElementById('eventOperationalResult').innerText = formatCurrency(eventOperationalResult);
+            document.getElementById('eventTaxes').innerText = formatCurrency(eventTaxes);
+            document.getElementById('eventNetResult').innerText = formatCurrency(eventNetResult);
+        }
+
+        function clearFields() {
+            const inputs = document.querySelectorAll('#calculator-form input');
+            inputs.forEach(input => input.value = ''); // Limpar os campos de entrada
+            const results = document.querySelectorAll('.results span');
+            results.forEach(span => span.innerText = 'R$ 0,00'); // Limpar os resultados
+        }
+
+        async function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Adicionar o cabeçalho
+            doc.setFontSize(16);
+            doc.setFont("helvetica", "bold");
+            doc.text("RELATÓRIO VOUCURTIR", 105, 15, { align: "center" });
+
+            // Dados do usuário (tabela 1)
+            const userInputs = [
+                ["Quantidade de Eventos Mensais", document.getElementById("events").value || "0"],
+                ["Público Médio por Evento", document.getElementById("audience").value || "0"],
+                ["Preço Médio do Ingresso (R$)", document.getElementById("ticketPrice").value || "0"],
+                ["Percentual de Venda Online (%)", document.getElementById("onlineRate").value || "0"],
+                ["Percentual de Venda Física (%)", document.getElementById("physicalRate").value || "0"],
+                ["Percentual de Venda Direta ou Cortesia (%)", document.getElementById("directRate").value || "0"],
+                ["Taxa de Conveniência Cobrada (%)", document.getElementById("convenienceFee").value || "0"],
+            ];
+
+            // Resultados (tabela 2)
+            const results = document.querySelector(".results");
+            const resultElements = results.querySelectorAll("p");
+            const resultData = [];
+            resultElements.forEach((result) => {
+                const [label, value] = result.innerText.split(": ");
+                resultData.push([label, value || ""]);
+            });
+
+            // Adicionar tabela de dados do usuário
+            doc.setFontSize(12);
+            doc.text("Dados Utilizados na Simulação:", 10, 30);
+            doc.autoTable({
+                startY: 35,
+                head: [["Descrição", "Valor"]],
+                body: userInputs,
+                theme: "grid",
+            });
+
+            // Adicionar tabela de resultados
+            const nextTableY = doc.lastAutoTable.finalY + 10; // Posição da próxima tabela
+            doc.text("Resultados da Simulação:", 10, nextTableY);
+            doc.autoTable({
+                startY: nextTableY + 5,
+                head: [["Descrição", "Valor"]],
+                body: resultData,
+                theme: "grid",
+            });
+
+            // Salvar o PDF com um nome específico
+            doc.save("relatorio-simulacao-voucurtir.pdf");
+        }        // Inicializar com a página inicial
+        navigate('home');
+    </script>
+</body>
+
+</html>
